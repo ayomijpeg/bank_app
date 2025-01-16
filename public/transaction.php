@@ -6,15 +6,15 @@ include('../include/db.php');
 include('../include/user_info.php');
 
 // Assuming the user's customer ID is stored in the session
-$customerId = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
+// $customerId = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 
-if ($customerId) {
+// if ($customerId) {
     $stmt = $conn->prepare("SELECT receivers_account, transaction_amount, transaction_type, date_created, time_created FROM transactions WHERE customer_id = :customer_id ORDER BY created_at DESC LIMIT 10");
     $stmt->execute([':customer_id' => $customerId]);
     $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $transactions = [];
-}
+// } else {
+//     $transactions = [];
+// }
 
 ?>
 

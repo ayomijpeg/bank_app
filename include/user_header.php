@@ -41,7 +41,7 @@
              <h5>Account ID: <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'N/A' ?></h5>
               <h5>User Name: <?= isset($_SESSION['account_name']) ? $_SESSION['account_name'] : 'N/A' ?></h5>
               <h5>Account Number: <?= isset($_SESSION['account_number']) ? $_SESSION['account_number'] : 'N/A' ?></h5>
-              var_dump($_SESSION);
+              <!-- var_dump($_SESSION); -->
         </div>
         <nav>
             <a href="dashboard.php" class="nav-link">Dashboard</a>

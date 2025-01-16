@@ -14,12 +14,10 @@ if (isset($_POST['submit'])) {
 
     if (empty($error)) {
         $statement = $conn->prepare("SELECT customer_id, account_name, account_number FROM customer WHERE account_number = :an");
-        $statement->bindParam(
-            ":ac ", $_POST['account_name'], 
-            ":account_number", $_POST['account_balance']
-        
-        );
+        $statement->bindParam(":an", $_POST['account_number'], PDO::PARAM_STR);
         $statement->execute();
+    }
+       $statement->execute();
 
         if ($statement->rowCount() > 0) {
             $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -34,7 +32,7 @@ if (isset($_POST['submit'])) {
             exit();
         }
     }
-}
+
 ?>
 
 

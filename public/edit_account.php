@@ -1,23 +1,26 @@
 <?php
 session_start();
+include('../include/user_auth.php'); // Ensure admin authentication
 include('../include/db.php'); // Include the database connection
-include('../include/user_auth.php');
 include('../include/user_info.php');
 
-if (!isset($_GET['id'])) {
-    header("Location: view_accounts.php?message=Invalid account ID");
+// Fetch account details based on customer ID from session or GET request
+if (isset($_GET['id'])) {
+    $customerId = $_GET['id'];
+} elseif (isset($_SESSION['customer_id'])) {
+    $customerId = $_SESSION['customer_id'];
+} else {
+    echo "<div class='alert alert-danger'>Invalid account ID. Please provide a valid ID.</div>";
     exit();
 }
 
-// Fetch account details
 try {
-    $stmt = $conn->prepare("SELECT * FROM customer WHERE customer_id = :cid");
-    $stmt->bindParam(':cid', $_GET['id'], PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM customer WHERE customer_id = :id");
+    $stmt->execute([':id' => $customerId]);
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$account) {
-        header("Location: view_accounts.php?message=Account not found");
+        echo "<div class='alert alert-danger'>Account not found.</div>";
         exit();
     }
 } catch (PDOException $e) {
@@ -25,7 +28,7 @@ try {
 }
 
 // Handle account update
-if (isset($_POST['update'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     try {
         $updateStmt = $conn->prepare("UPDATE customer SET 
             account_name = :account_name,
@@ -38,7 +41,7 @@ if (isset($_POST['update'])) {
             ':account_name' => $_POST['account_name'],
             ':account_balance' => $_POST['account_balance'],
             ':account_type' => $_POST['account_type'],
-            ':id' => $_GET['id']
+            ':id' => $customerId
         ]);
 
         header("Location: view_accounts.php?message=Account updated successfully");
@@ -89,6 +92,7 @@ if (isset($_POST['update'])) {
     </style>
 </head>
 <body>
+    <?php include('../include/user_header.php') ?>
     <!-- Header -->
     <div class="header text-center">
         <h1>Edit Account Details</h1>

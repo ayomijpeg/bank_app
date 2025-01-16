@@ -1,6 +1,6 @@
 <?php
 session_start();
-var_dump( $_SESSION);
+// var_dump( $_SESSION);
 include('../include/user_auth.php');
 include('../include/db.php');
 include('../include/user_info.php');
@@ -60,17 +60,6 @@ include('../include/user_info.php');
     </div>
     
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Account Overview</h5>
-                </div>
-                <div class="card-body">
-                    <p>Manage your account details, change your password, and more.</p>
-                    <a href="edit_account.php" class="btn btn-custom w-100">Edit Account</a>
-                </div>
-            </div>
-        </div>
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">

@@ -6,17 +6,20 @@ include('../include/user_auth.php');
 include('../include/db.php');
 include('../include/user_info.php');
 
+
+$customerId = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 // Check customer_id value
-if (isset($customer_id)) {
-    echo "Customer ID: " . $customer_id;
-} else {
-    echo "No customer ID found.";
-}
+// if (isset($customerId)) {
+//     echo "Customer ID: " . $customerId;
+
+// } else {
+//     echo "No customer ID found.";
+// }
 
 // Fetch transactions
 try {
     $stmt = $conn->prepare("SELECT * FROM transactions WHERE customer_id = :cid");
-    $stmt->bindParam(":cid", $customer_id, PDO::PARAM_INT);
+    $stmt->bindParam(":cid", $customerId, PDO::PARAM_INT);
     $stmt->execute();
     $statement_record = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -65,8 +68,8 @@ try {
                         <td><?= htmlspecialchars($value['senders_account']) ?></td>
                         <td><?= htmlspecialchars($value['receivers_account']) ?></td>
                         <td><?= htmlspecialchars($value['transaction_amount']) ?></td>
-                        <td><?= htmlspecialchars($value['previous_balance']) ?></td>
-                        <td><?= htmlspecialchars($value['final_balance']) ?></td>
+                        <td><?= htmlspecialchars($value['sender_balance_before']) ?></td>
+                        <td><?= htmlspecialchars($value['sender_balance_after']) ?></td>
                         <td><?= strtoupper(htmlspecialchars($value['transaction_type'])) ?></td>
                         <td><?= htmlspecialchars($value['date_created']) ?></td>
                         <td><?= htmlspecialchars($value['time_created']) ?></td>
